@@ -234,7 +234,7 @@ export default function App() {
     >
       {isDesktopPointer && <CustomCursor activeCursorId={activeCursorId} />}
       {/* Header */}
-      <header className="bg-white/16 backdrop-blur-md border-b border-white/35 px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-[0_8px_30px_-6px_rgba(0,0,0,0.7)]">
+      <header className="bg-white/16 backdrop-blur-md border-b-2 border-white/35 px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-[0_8px_30px_-6px_rgba(0,0,0,0.7)]">
         <div
           className="flex items-center space-x-3 cursor-pointer select-none group"
           onClick={() => setCurrentDay(liveDay)}
@@ -255,7 +255,7 @@ export default function App() {
         <div className="flex items-center space-x-2.5">
           <button
             onClick={() => setIsBackgroundModalOpen(true)}
-            className="hover-glow flex items-center space-x-1.5 text-xs font-bold px-3 py-2 bg-white/24 backdrop-blur-md border border-white/45 hover:bg-white/40 hover:border-white/60 rounded-lg text-slate-100 transition-all active:scale-95"
+            className="hover-glow flex items-center space-x-1.5 text-xs font-bold px-3 py-2 bg-white/24 backdrop-blur-md border-2 border-white/45 hover:bg-white/40 hover:border-white/60 rounded-lg text-slate-100 transition-all active:scale-95"
           >
             <Sparkles className="h-4 w-4 text-cyan-400" />
             <span className="hidden sm:inline">Backgrounds</span>
@@ -278,7 +278,7 @@ export default function App() {
             href="https://basepaint.xyz"
             target="_blank"
             rel="noreferrer"
-            className="hover-glow flex items-center space-x-1.5 text-xs font-semibold px-3 py-2 bg-white/24 backdrop-blur-md border border-white/45 hover:bg-white/40 hover:border-white/60 rounded-lg text-slate-100 hover:text-white transition-all active:scale-95"
+            className="hover-glow flex items-center space-x-1.5 text-xs font-semibold px-3 py-2 bg-white/24 backdrop-blur-md border-2 border-white/45 hover:bg-white/40 hover:border-white/60 rounded-lg text-slate-100 hover:text-white transition-all active:scale-95"
           >
             <span>basepaint.xyz</span>
             <ExternalLink className="h-3.5 w-3.5 text-blue-400" />
@@ -289,7 +289,7 @@ export default function App() {
       {/* Main Container */}
       <main className="flex-1 max-w-6xl w-full mx-auto p-3 sm:p-6 space-y-4 sm:space-y-6">
         {/* Navigation & Cycle Bar */}
-        <section className="bg-white/24 backdrop-blur-md border border-white/45 p-3.5 sm:p-4 rounded-xl shadow-[0_12px_40px_-8px_rgba(0,0,0,0.65)] space-y-3 hover:shadow-[0_16px_48px_-8px_rgba(0,0,0,0.75)] transition-all duration-300">
+        <section className="bg-white/24 backdrop-blur-md border-2 border-white/45 p-3.5 sm:p-4 rounded-xl shadow-[0_12px_40px_-8px_rgba(0,0,0,0.65)] space-y-3 hover:shadow-[0_16px_48px_-8px_rgba(0,0,0,0.75)] transition-all duration-300">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center space-x-2 sm:space-x-3">
               <div className="flex items-center space-x-2 bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-600/50 px-3 py-1.5 rounded-lg hover:border-purple-400/80 hover:bg-purple-900/60 transition-all duration-300">
@@ -353,17 +353,17 @@ export default function App() {
         {/* Dashboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6">
           {/* Canvas Display Viewport */}
-          <div className="md:col-span-7 bg-white/24 backdrop-blur-md border border-white/45 p-4 sm:p-5 rounded-xl flex flex-col items-center justify-between space-y-4 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.7)] hover:shadow-[0_20px_60px_-8px_rgba(0,0,0,0.8)] transition-all duration-300 group">
+          <div className="md:col-span-7 bg-white/24 backdrop-blur-md border-2 border-white/45 p-4 sm:p-5 rounded-xl flex flex-col items-center justify-between space-y-4 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.7)] hover:shadow-[0_20px_60px_-8px_rgba(0,0,0,0.8)] transition-shadow duration-300 group animate-float">
             <div className="flex items-center justify-between w-full text-xs text-slate-400">
               <div className="flex items-center space-x-2">
-                <span className="bg-white/24 backdrop-blur-sm border border-white/35 px-2 py-0.5 rounded text-slate-200 font-mono">
+                <span className="bg-white/24 backdrop-blur-sm border-2 border-white/35 px-2 py-0.5 rounded text-slate-200 font-mono">
                   {size}x{size}px
                 </span>
                 <span className="text-slate-500 text-[11px]">CC0 Public Domain</span>
               </div>
 
               {currentDay < liveDay && (
-                <div className="flex bg-white/24 backdrop-blur-sm border border-white/35 rounded-lg p-0.5">
+                <div className="flex bg-white/24 backdrop-blur-sm border-2 border-white/35 rounded-lg p-0.5">
                   <button
                     onClick={() => setViewMode('image')}
                     className={`px-2.5 py-1 text-xs font-medium rounded-md transition-all flex items-center space-x-1 ${
@@ -391,7 +391,7 @@ export default function App() {
             </div>
 
             {/* Render Canvas Box */}
-            <div className="relative aspect-square w-full max-w-[380px] sm:max-w-[420px] bg-black/20 backdrop-blur-sm border border-white/40 rounded-lg overflow-hidden flex items-center justify-center shadow-[0_10px_35px_-6px_rgba(0,0,0,0.75)] transition-all duration-300 hover:shadow-[0_14px_45px_-6px_rgba(34,211,238,0.35)] hover:border-white/60">
+            <div className="relative aspect-square w-full max-w-[380px] sm:max-w-[420px] bg-black/20 backdrop-blur-sm border-2 border-white/40 rounded-lg overflow-hidden flex items-center justify-center shadow-[0_10px_35px_-6px_rgba(0,0,0,0.75)] transition-all duration-300 hover:shadow-[0_14px_45px_-6px_rgba(34,211,238,0.35)] hover:border-white/60">
               {currentDay === liveDay ? (
                 <img
                   src={canvasImgUrl}
@@ -423,7 +423,7 @@ export default function App() {
               {/* Expand Button */}
               <button
                 onClick={handleExpandModal}
-                className="hover-glow absolute top-2 right-2 p-2 bg-white/32 backdrop-blur-sm border border-white/55 hover:bg-white/46 hover:border-white/70 text-slate-200 hover:text-white rounded-lg transition-all duration-300 hover:scale-110 active:scale-95"
+                className="hover-glow absolute top-2 right-2 p-2 bg-white/32 backdrop-blur-sm border-2 border-white/55 hover:bg-white/46 hover:border-white/70 text-slate-200 hover:text-white rounded-lg transition-all duration-300 hover:scale-110 active:scale-95"
                 title="Expand Artwork"
               >
                 <Maximize2 className="h-4 w-4" />
@@ -441,7 +441,7 @@ export default function App() {
           </div>
 
           {/* Canvas Metadata & Palette Section */}
-          <div className="md:col-span-5 bg-white/24 backdrop-blur-md border border-white/45 p-5 sm:p-6 rounded-xl flex flex-col justify-between space-y-5 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.7)] hover:shadow-[0_20px_60px_-8px_rgba(0,0,0,0.8)] transition-all duration-300 group">
+          <div className="md:col-span-5 bg-white/24 backdrop-blur-md border-2 border-white/45 p-5 sm:p-6 rounded-xl flex flex-col justify-between space-y-5 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.7)] hover:shadow-[0_20px_60px_-8px_rgba(0,0,0,0.8)] transition-shadow duration-300 group animate-float-delay">
             <div>
               <div className="flex items-center space-x-2 text-yellow-400 text-xs font-bold uppercase tracking-wider mb-1">
                 <span>Daily Theme</span>
@@ -456,7 +456,7 @@ export default function App() {
               </h2>
 
               {themeData?.proposer && (
-                <div className="bg-white/24 backdrop-blur-sm border border-white/35 px-2 py-0.5 rounded text-xs text-slate-300 font-mono">
+                <div className="bg-white/24 backdrop-blur-sm border-2 border-white/35 px-2 py-0.5 rounded text-xs text-slate-300 font-mono">
                   Proposed by: <span className="text-yellow-300 font-bold">{themeData.proposer}</span>
                 </div>
               )}
@@ -477,10 +477,10 @@ export default function App() {
                   <button
                     key={idx}
                     onClick={() => copyToClipboard(hex)}
-                    className="group relative flex flex-col items-center p-1.5 rounded-lg bg-white/24 backdrop-blur-sm border border-white/35 shadow-[0_4px_14px_-4px_rgba(0,0,0,0.6)] hover:bg-white/40 hover:border-white/60 hover:shadow-[0_6px_20px_-4px_rgba(34,211,238,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
+                    className="group relative flex flex-col items-center p-1.5 rounded-lg bg-white/24 backdrop-blur-sm border-2 border-white/35 shadow-[0_4px_14px_-4px_rgba(0,0,0,0.6)] hover:bg-white/40 hover:border-white/60 hover:shadow-[0_6px_20px_-4px_rgba(34,211,238,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
                   >
                     <div
-                      className="w-full h-8 rounded border border-white/45 shadow-inner group-hover:shadow-lg group-hover:border-white/70 transition-all duration-200"
+                      className="w-full h-8 rounded border-2 border-white/45 shadow-inner group-hover:shadow-lg group-hover:border-white/70 transition-all duration-200"
                       style={{ backgroundColor: hex }}
                     />
                     <span className="text-[10px] font-mono text-slate-400 group-hover:text-slate-200 mt-1 flex items-center space-x-0.5 transition-colors duration-200">
@@ -515,10 +515,10 @@ export default function App() {
       {/* Background Modal */}
       {isBackgroundModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md p-4 flex items-center justify-center">
-          <div className="bg-white/32 backdrop-blur-lg border border-white/55 rounded-2xl p-5 sm:p-6 max-w-3xl w-full space-y-5 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.85)] relative">
+          <div className="bg-white/32 backdrop-blur-lg border-2 border-white/55 rounded-2xl p-5 sm:p-6 max-w-3xl w-full space-y-5 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.85)] relative">
             <button
               onClick={() => setIsBackgroundModalOpen(false)}
-              className="hover-glow absolute top-4 right-4 p-1.5 bg-white/40 backdrop-blur-sm border border-white/55 hover:bg-white/52 hover:border-white/70 text-slate-200 hover:text-white rounded-lg transition-all"
+              className="hover-glow absolute top-4 right-4 p-1.5 bg-white/40 backdrop-blur-sm border-2 border-white/55 hover:bg-white/52 hover:border-white/70 text-slate-200 hover:text-white rounded-lg transition-all"
             >
               <X className="h-5 w-5" />
             </button>
@@ -543,7 +543,7 @@ export default function App() {
                     key={variant.id}
                     className={`rounded-2xl p-3.5 border transition-all ${
                       isActive
-                        ? 'bg-purple-600/40 backdrop-blur-md border-purple-300/60'
+                        ? 'bg-purple-600/40 backdrop-blur-md border-2 border-purple-300/60'
                         : isUnlocked
                         ? 'bg-white/24 backdrop-blur-md border-white/45 hover:bg-white/32 hover:border-white/60'
                         : 'bg-white/16 backdrop-blur-md border-white/25 opacity-60'
@@ -597,7 +597,7 @@ export default function App() {
       {/* Cursor Armory Modal */}
       {isArmoryOpen && isDesktopPointer && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md p-4 flex items-center justify-center">
-          <div className="bg-white/32 backdrop-blur-lg border border-white/55 rounded-2xl p-5 sm:p-6 max-w-3xl w-full space-y-5 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.85)] relative">
+          <div className="bg-white/32 backdrop-blur-lg border-2 border-white/55 rounded-2xl p-5 sm:p-6 max-w-3xl w-full space-y-5 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.85)] relative">
             <button
               onClick={() => setIsArmoryOpen(false)}
               className="hover-glow absolute top-4 right-4 p-1.5 bg-slate-800 border border-slate-700 text-slate-400 hover:text-white rounded-lg"
@@ -627,14 +627,14 @@ export default function App() {
                     key={cursor.id}
                     className={`p-3.5 rounded-xl border flex items-center justify-between transition-all ${
                       isEquipped
-                        ? 'bg-purple-600/40 backdrop-blur-md border-purple-300/60'
+                        ? 'bg-purple-600/40 backdrop-blur-md border-2 border-purple-300/60'
                         : isUnlocked
                         ? 'bg-white/24 backdrop-blur-md border-white/45 hover:bg-white/32 hover:border-white/60'
                         : 'bg-white/16 backdrop-blur-md border-white/25 opacity-60'
                     }`}
                   >
                     <div className="flex items-center space-x-3.5">
-                      <div className="p-2 bg-white/32 backdrop-blur-sm border border-white/45 rounded-lg w-10 h-10 flex items-center justify-center">
+                      <div className="p-2 bg-white/32 backdrop-blur-sm border-2 border-white/45 rounded-lg w-10 h-10 flex items-center justify-center">
                         <img
                           src={cursor.previewImage}
                           alt={cursor.name}
