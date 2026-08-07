@@ -221,12 +221,20 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen text-white flex flex-col font-mono selection:bg-yellow-400 selection:text-black"
-      style={{ background: activeBackground.background }}
+      className="min-h-screen text-white flex flex-col font-mono selection:bg-yellow-400 selection:text-black animated-mesh-bg"
+      style={{
+        '--bg-base': activeBackground.colors.base,
+        '--bg-c1': activeBackground.colors.c1,
+        '--bg-c2': activeBackground.colors.c2,
+        '--bg-c3': activeBackground.colors.c3,
+        '--bg-c4': activeBackground.colors.c4,
+        '--bg-grid-opacity': activeBackground.gridOpacity ?? 0.04,
+        '--bg-grid-size': activeBackground.gridSize ?? '26px',
+      }}
     >
       {isDesktopPointer && <CustomCursor activeCursorId={activeCursorId} />}
       {/* Header */}
-      <header className="bg-white/5 backdrop-blur-md px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-2xl">
+      <header className="bg-white/16 backdrop-blur-md px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-2xl">
         <div
           className="flex items-center space-x-3 cursor-pointer select-none group"
           onClick={() => setCurrentDay(liveDay)}
@@ -247,7 +255,7 @@ export default function App() {
         <div className="flex items-center space-x-2.5">
           <button
             onClick={() => setIsBackgroundModalOpen(true)}
-            className="flex items-center space-x-1.5 text-xs font-bold px-3 py-2 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-lg text-slate-100 transition-all active:scale-95"
+            className="flex items-center space-x-1.5 text-xs font-bold px-3 py-2 bg-white/24 backdrop-blur-md hover:bg-white/40 rounded-lg text-slate-100 transition-all active:scale-95"
           >
             <Sparkles className="h-4 w-4 text-cyan-400" />
             <span className="hidden sm:inline">Backgrounds</span>
@@ -270,7 +278,7 @@ export default function App() {
             href="https://basepaint.xyz"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center space-x-1.5 text-xs font-semibold px-3 py-2 bg-white/10 backdrop-blur-md hover:bg-white/20 rounded-lg text-slate-100 hover:text-white transition-all active:scale-95"
+            className="flex items-center space-x-1.5 text-xs font-semibold px-3 py-2 bg-white/24 backdrop-blur-md hover:bg-white/40 rounded-lg text-slate-100 hover:text-white transition-all active:scale-95"
           >
             <span>basepaint.xyz</span>
             <ExternalLink className="h-3.5 w-3.5 text-blue-400" />
@@ -281,7 +289,7 @@ export default function App() {
       {/* Main Container */}
       <main className="flex-1 max-w-6xl w-full mx-auto p-3 sm:p-6 space-y-4 sm:space-y-6">
         {/* Navigation & Cycle Bar */}
-        <section className="bg-white/10 backdrop-blur-md p-3.5 sm:p-4 rounded-xl shadow-lg space-y-3 hover:shadow-xl transition-all duration-300">
+        <section className="bg-white/24 backdrop-blur-md p-3.5 sm:p-4 rounded-xl shadow-lg space-y-3 hover:shadow-xl transition-all duration-300">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center space-x-2 sm:space-x-3">
               <div className="flex items-center space-x-2 bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-600/50 px-3 py-1.5 rounded-lg hover:border-purple-400/80 hover:bg-purple-900/60 transition-all duration-300">
@@ -345,17 +353,17 @@ export default function App() {
         {/* Dashboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6">
           {/* Canvas Display Viewport */}
-          <div className="md:col-span-7 bg-white/10 backdrop-blur-md p-4 sm:p-5 rounded-xl flex flex-col items-center justify-between space-y-4 shadow-2xl hover:shadow-2xl transition-all duration-300 group">
+          <div className="md:col-span-7 bg-white/24 backdrop-blur-md p-4 sm:p-5 rounded-xl flex flex-col items-center justify-between space-y-4 shadow-2xl hover:shadow-2xl transition-all duration-300 group">
             <div className="flex items-center justify-between w-full text-xs text-slate-400">
               <div className="flex items-center space-x-2">
-                <span className="bg-white/10 backdrop-blur-sm px-2 py-0.5 rounded text-slate-200 font-mono">
+                <span className="bg-white/24 backdrop-blur-sm px-2 py-0.5 rounded text-slate-200 font-mono">
                   {size}x{size}px
                 </span>
                 <span className="text-slate-500 text-[11px]">CC0 Public Domain</span>
               </div>
 
               {currentDay < liveDay && (
-                <div className="flex bg-white/10 backdrop-blur-sm rounded-lg p-0.5">
+                <div className="flex bg-white/24 backdrop-blur-sm rounded-lg p-0.5">
                   <button
                     onClick={() => setViewMode('image')}
                     className={`px-2.5 py-1 text-xs font-medium rounded-md transition-all flex items-center space-x-1 ${
@@ -415,7 +423,7 @@ export default function App() {
               {/* Expand Button */}
               <button
                 onClick={handleExpandModal}
-                className="absolute top-2 right-2 p-2 bg-white/15 backdrop-blur-sm hover:bg-white/25 text-slate-200 hover:text-white rounded-lg transition-all duration-300 hover:scale-110 active:scale-95"
+                className="absolute top-2 right-2 p-2 bg-white/32 backdrop-blur-sm hover:bg-white/46 text-slate-200 hover:text-white rounded-lg transition-all duration-300 hover:scale-110 active:scale-95"
                 title="Expand Artwork"
               >
                 <Maximize2 className="h-4 w-4" />
@@ -433,7 +441,7 @@ export default function App() {
           </div>
 
           {/* Canvas Metadata & Palette Section */}
-          <div className="md:col-span-5 bg-white/10 backdrop-blur-md p-5 sm:p-6 rounded-xl flex flex-col justify-between space-y-5 shadow-2xl hover:shadow-2xl transition-all duration-300 group">
+          <div className="md:col-span-5 bg-white/24 backdrop-blur-md p-5 sm:p-6 rounded-xl flex flex-col justify-between space-y-5 shadow-2xl hover:shadow-2xl transition-all duration-300 group">
             <div>
               <div className="flex items-center space-x-2 text-yellow-400 text-xs font-bold uppercase tracking-wider mb-1">
                 <span>Daily Theme</span>
@@ -448,7 +456,7 @@ export default function App() {
               </h2>
 
               {themeData?.proposer && (
-                <div className="bg-white/10 backdrop-blur-sm px-2 py-0.5 rounded text-xs text-slate-300 font-mono">
+                <div className="bg-white/24 backdrop-blur-sm px-2 py-0.5 rounded text-xs text-slate-300 font-mono">
                   Proposed by: <span className="text-yellow-300 font-bold">{themeData.proposer}</span>
                 </div>
               )}
@@ -469,7 +477,7 @@ export default function App() {
                   <button
                     key={idx}
                     onClick={() => copyToClipboard(hex)}
-                    className="group relative flex flex-col items-center p-1.5 rounded-lg bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:shadow-lg hover:shadow-cyan-500/20 hover:scale-105 active:scale-95 transition-all duration-200"
+                    className="group relative flex flex-col items-center p-1.5 rounded-lg bg-white/24 backdrop-blur-sm hover:bg-white/40 hover:shadow-lg hover:shadow-cyan-500/20 hover:scale-105 active:scale-95 transition-all duration-200"
                   >
                     <div
                       className="w-full h-8 rounded border border-white/20 shadow-inner group-hover:shadow-lg group-hover:border-white/40 transition-all duration-200"
@@ -507,10 +515,10 @@ export default function App() {
       {/* Background Modal */}
       {isBackgroundModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md p-4 flex items-center justify-center">
-          <div className="bg-white/15 backdrop-blur-lg rounded-2xl p-5 sm:p-6 max-w-3xl w-full space-y-5 shadow-2xl relative">
+          <div className="bg-white/32 backdrop-blur-lg rounded-2xl p-5 sm:p-6 max-w-3xl w-full space-y-5 shadow-2xl relative">
             <button
               onClick={() => setIsBackgroundModalOpen(false)}
-              className="absolute top-4 right-4 p-1.5 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-slate-200 hover:text-white rounded-lg transition-all"
+              className="absolute top-4 right-4 p-1.5 bg-white/40 backdrop-blur-sm hover:bg-white/52 text-slate-200 hover:text-white rounded-lg transition-all"
             >
               <X className="h-5 w-5" />
             </button>
@@ -537,12 +545,21 @@ export default function App() {
                       isActive
                         ? 'bg-purple-600/40 backdrop-blur-md'
                         : isUnlocked
-                        ? 'bg-white/10 backdrop-blur-md hover:bg-white/15'
-                        : 'bg-white/5 backdrop-blur-md opacity-60'
+                        ? 'bg-white/24 backdrop-blur-md hover:bg-white/32'
+                        : 'bg-white/16 backdrop-blur-md opacity-60'
                     }`}
                   >
                     <div className="relative overflow-hidden rounded-2xl mb-3 h-24 bg-black/20">
-                      <div className="absolute inset-0" style={{ background: variant.preview }} />
+                      <div
+                        className="absolute inset-0 animated-mesh-bg animated-mesh-bg-mini"
+                        style={{
+                          '--bg-base': variant.colors.base,
+                          '--bg-c1': variant.colors.c1,
+                          '--bg-c2': variant.colors.c2,
+                          '--bg-c3': variant.colors.c3,
+                          '--bg-c4': variant.colors.c4,
+                        }}
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                     </div>
                     <div>
@@ -580,7 +597,7 @@ export default function App() {
       {/* Cursor Armory Modal */}
       {isArmoryOpen && isDesktopPointer && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md p-4 flex items-center justify-center">
-          <div className="bg-white/15 backdrop-blur-lg rounded-2xl p-5 sm:p-6 max-w-3xl w-full space-y-5 shadow-2xl relative">
+          <div className="bg-white/32 backdrop-blur-lg rounded-2xl p-5 sm:p-6 max-w-3xl w-full space-y-5 shadow-2xl relative">
             <button
               onClick={() => setIsArmoryOpen(false)}
               className="absolute top-4 right-4 p-1.5 bg-slate-800 border border-slate-700 text-slate-400 hover:text-white rounded-lg"
@@ -612,12 +629,12 @@ export default function App() {
                       isEquipped
                         ? 'bg-purple-600/40 backdrop-blur-md'
                         : isUnlocked
-                        ? 'bg-white/10 backdrop-blur-md hover:bg-white/15'
-                        : 'bg-white/5 backdrop-blur-md opacity-60'
+                        ? 'bg-white/24 backdrop-blur-md hover:bg-white/32'
+                        : 'bg-white/16 backdrop-blur-md opacity-60'
                     }`}
                   >
                     <div className="flex items-center space-x-3.5">
-                      <div className="p-2 bg-white/15 backdrop-blur-sm rounded-lg w-10 h-10 flex items-center justify-center">
+                      <div className="p-2 bg-white/32 backdrop-blur-sm rounded-lg w-10 h-10 flex items-center justify-center">
                         <img
                           src={cursor.previewImage}
                           alt={cursor.name}
