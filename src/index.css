@@ -21,22 +21,61 @@ body, p, span, div, button {
 }
 
 body {
-  background-color: #0a0e27;
-  background-image:
-    radial-gradient(circle at 20% 15%, rgba(168, 85, 247, 0.28), transparent 20%),
-    radial-gradient(circle at 80% 30%, rgba(59, 130, 246, 0.25), transparent 18%),
-    radial-gradient(circle at 10% 80%, rgba(34, 197, 94, 0.18), transparent 16%),
-    radial-gradient(circle at 90% 70%, rgba(236, 72, 153, 0.2), transparent 15%),
-    linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(59, 130, 246, 0.8), rgba(168, 85, 247, 0.7), rgba(236, 72, 153, 0.5)),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 320% 320%, 320% 320%, 320% 320%, 320% 320%, 100% 100%, 24px 24px, 24px 24px;
-  background-position: 0% 0%, 100% 10%, 20% 90%, 60% 40%, 0% 0%, 0% 0%, 0% 0%;
-  animation: gradientFlow 20s ease infinite;
+  background-color: #05060f;
   color: #ffffff;
   margin: 0;
   -webkit-tap-highlight-color: transparent;
   letter-spacing: 0.01em;
+}
+
+/* Animated Gradient-Mesh Background
+   Driven by CSS custom properties (--bg-base, --bg-c1..--bg-c4) set inline
+   per active background variant. Four glowing blobs drift and overlap using
+   screen blend mode, which brightens colors where they intersect. */
+.animated-mesh-bg {
+  background-color: var(--bg-base, #05060f);
+  background-image:
+    radial-gradient(circle, var(--bg-c1, rgba(168, 85, 247, 0.5)), transparent 60%),
+    radial-gradient(circle, var(--bg-c2, rgba(59, 130, 246, 0.5)), transparent 60%),
+    radial-gradient(circle, var(--bg-c3, rgba(236, 72, 153, 0.4)), transparent 60%),
+    radial-gradient(circle, var(--bg-c4, rgba(34, 211, 238, 0.35)), transparent 60%),
+    linear-gradient(0deg, rgba(255, 255, 255, var(--bg-grid-opacity, 0.04)) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, var(--bg-grid-opacity, 0.04)) 1px, transparent 1px);
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat;
+  background-size: 70% 70%, 65% 65%, 60% 60%, 55% 55%, var(--bg-grid-size, 26px) var(--bg-grid-size, 26px), var(--bg-grid-size, 26px) var(--bg-grid-size, 26px);
+  background-blend-mode: screen, screen, screen, screen, normal, normal;
+  background-position:
+    10% 15%,
+    85% 20%,
+    15% 85%,
+    85% 80%,
+    0 0,
+    0 0;
+  animation: meshDrift 24s ease-in-out infinite;
+}
+
+@keyframes meshDrift {
+  0% {
+    background-position: 10% 15%, 85% 20%, 15% 85%, 85% 80%, 0 0, 0 0;
+  }
+  25% {
+    background-position: 35% 45%, 60% 55%, 40% 55%, 55% 40%, 0 0, 0 0;
+  }
+  50% {
+    background-position: 70% 65%, 25% 35%, 65% 25%, 25% 65%, 0 0, 0 0;
+  }
+  75% {
+    background-position: 40% 80%, 75% 15%, 20% 40%, 70% 30%, 0 0, 0 0;
+  }
+  100% {
+    background-position: 10% 15%, 85% 20%, 15% 85%, 85% 80%, 0 0, 0 0;
+  }
+}
+
+/* Smaller/faster variant used for the background-gallery preview swatches */
+.animated-mesh-bg-mini {
+  animation-duration: 9s;
+  background-size: 90% 90%, 80% 80%, 75% 75%, 65% 65%, 16px 16px, 16px 16px;
 }
 
 /* Custom Pointer Engine */
@@ -52,22 +91,6 @@ body {
 .pixelated {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-}
-
-/* Enhanced Animated Gradient Background */
-@keyframes gradientFlow {
-  0% {
-    background-position: 0% 0%, 100% 10%, 20% 90%, 60% 40%, 0% 0%;
-  }
-  33% {
-    background-position: 50% 40%, 30% 60%, 70% 20%, 20% 80%, 0% 0%;
-  }
-  66% {
-    background-position: 100% 70%, 0% 30%, 50% 50%, 80% 10%, 0% 0%;
-  }
-  100% {
-    background-position: 0% 0%, 100% 10%, 20% 90%, 60% 40%, 0% 0%;
-  }
 }
 
 /* Glowing animated text */
