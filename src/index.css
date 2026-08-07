@@ -228,6 +228,25 @@ a:focus-visible {
   animation: boxGlow 3s ease-in-out infinite;
 }
 
+/* Slow, steady floating motion for the main content panels */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: floatSlow 7s ease-in-out infinite;
+}
+
+.animate-float-delay {
+  animation: floatSlow 7s ease-in-out infinite;
+  animation-delay: -3.5s; /* opposite phase, so the two panels drift asynchronously */
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
