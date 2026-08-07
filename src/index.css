@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Pixel font for all headers */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Pixelify Sans', monospace;
+  letter-spacing: 0.05em;
+}
+
+/* Stylish body font */
+body, p, span, div, button {
+  font-family: 'Inter', 'Roboto Mono', monospace;
+}
+
+:root {
+  --app-cursor-default: auto;
+  --app-cursor-pointer: pointer;
+}
+
+body {
+  background-color: #0a0e27;
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(168, 85, 247, 0.28), transparent 20%),
+    radial-gradient(circle at 80% 30%, rgba(59, 130, 246, 0.25), transparent 18%),
+    radial-gradient(circle at 10% 80%, rgba(34, 197, 94, 0.18), transparent 16%),
+    radial-gradient(circle at 90% 70%, rgba(236, 72, 153, 0.2), transparent 15%),
+    linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(59, 130, 246, 0.8), rgba(168, 85, 247, 0.7), rgba(236, 72, 153, 0.5)),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 320% 320%, 320% 320%, 320% 320%, 320% 320%, 100% 100%, 24px 24px, 24px 24px;
+  background-position: 0% 0%, 100% 10%, 20% 90%, 60% 40%, 0% 0%, 0% 0%, 0% 0%;
+  animation: gradientFlow 20s ease infinite;
+  color: #ffffff;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  letter-spacing: 0.01em;
+}
+
+/* Custom Pointer Engine */
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body,
+  body * {
+    cursor: none !important;
+  }
+}
+
+/* Crisp Pixel Art Rendering */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Enhanced Animated Gradient Background */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 0%, 100% 10%, 20% 90%, 60% 40%, 0% 0%;
+  }
+  33% {
+    background-position: 50% 40%, 30% 60%, 70% 20%, 20% 80%, 0% 0%;
+  }
+  66% {
+    background-position: 100% 70%, 0% 30%, 50% 50%, 80% 10%, 0% 0%;
+  }
+  100% {
+    background-position: 0% 0%, 100% 10%, 20% 90%, 60% 40%, 0% 0%;
+  }
+}
+
+/* Glowing animated text */
+@keyframes pulseGlow {
+  0%, 100% { 
+    text-shadow: 0 0 8px rgba(168, 85, 247, 0.4), 0 0 20px rgba(59, 130, 246, 0.2);
+  }
+  50% { 
+    text-shadow: 0 0 16px rgba(168, 85, 247, 0.7), 0 0 32px rgba(59, 130, 246, 0.4);
+  }
+}
+
+.animate-glow {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+/* Bounce animation */
+@keyframes bounce-smooth {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-bounce-smooth {
+  animation: bounce-smooth 2s infinite;
+}
+
+/* Scale on hover */
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+/* Shimmer animation for notifications */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Slide and fade for notifications */
+@keyframes slideInRight {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+}
+
+.animate-slide-in {
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-slide-out {
+  animation: slideOutRight 0.4s cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+/* Rainbow gradient animation */
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-rainbow {
+  background-size: 200% 200%;
+  animation: rainbow 4s ease infinite;
+}
+
+/* Pulse animation for progress bar */
+@keyframes progressPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7); }
+  50% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+}
+
+.animate-progress-pulse {
+  animation: progressPulse 2s infinite;
+}
+
+/* Smooth glow on boxes */
+@keyframes boxGlow {
+  0%, 100% { 
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.2), inset 0 0 12px rgba(168, 85, 247, 0.05);
+  }
+  50% { 
+    box-shadow: 0 0 24px rgba(59, 130, 246, 0.3), inset 0 0 12px rgba(59, 130, 246, 0.1);
+  }
+}
+
+.animate-box-glow {
+  animation: boxGlow 3s ease-in-out infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 20, 28, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8b5cf6, #3b82f6);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #a78bfa, #60a5fa);
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
+}
+
+/* Apply custom cursors only when pointer hover is available */
+@media (pointer: fine) {
+  .custom-cursor-active,
+  .custom-cursor-active * {
+    cursor: var(--app-cursor-pointer);
+  }
+}
+
+/* Fallback for touch devices */
+@media (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
+}
