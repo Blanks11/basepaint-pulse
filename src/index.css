@@ -30,52 +30,92 @@ body {
 
 /* Animated Gradient-Mesh Background
    Driven by CSS custom properties (--bg-base, --bg-c1..--bg-c4) set inline
-   per active background variant. Four glowing blobs drift and overlap using
-   screen blend mode, which brightens colors where they intersect. */
+   per active background variant. Two glowing blob layers (::before/::after)
+   drift and scale using `transform`, which the browser can run entirely on
+   the compositor/GPU thread. This is deliberately NOT done by animating
+   background-position: that approach forces a full-viewport repaint of the
+   background every frame, and every glass panel with backdrop-blur sitting
+   on top then has to re-blur that repaint too -- compounding into visible
+   lag. transform-based blobs are pre-rasterized once and just moved, which
+   is dramatically cheaper. */
 .animated-mesh-bg {
+  overflow: hidden;
+  isolation: isolate;
   background-color: var(--bg-base, #05060f);
   background-image:
-    radial-gradient(circle, var(--bg-c1, rgba(168, 85, 247, 0.5)), transparent 60%),
-    radial-gradient(circle, var(--bg-c2, rgba(59, 130, 246, 0.5)), transparent 60%),
-    radial-gradient(circle, var(--bg-c3, rgba(236, 72, 153, 0.4)), transparent 60%),
-    radial-gradient(circle, var(--bg-c4, rgba(34, 211, 238, 0.35)), transparent 60%),
     linear-gradient(0deg, rgba(255, 255, 255, var(--bg-grid-opacity, 0.04)) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, var(--bg-grid-opacity, 0.04)) 1px, transparent 1px);
-  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat;
-  background-size: 70% 70%, 65% 65%, 60% 60%, 55% 55%, var(--bg-grid-size, 26px) var(--bg-grid-size, 26px), var(--bg-grid-size, 26px) var(--bg-grid-size, 26px);
-  background-blend-mode: screen, screen, screen, screen, normal, normal;
-  background-position:
-    10% 15%,
-    85% 20%,
-    15% 85%,
-    85% 80%,
-    0 0,
-    0 0;
-  animation: meshDrift 24s ease-in-out infinite;
+  background-size: var(--bg-grid-size, 26px) var(--bg-grid-size, 26px);
 }
 
-@keyframes meshDrift {
-  0% {
-    background-position: 10% 15%, 85% 20%, 15% 85%, 85% 80%, 0 0, 0 0;
-  }
-  25% {
-    background-position: 35% 45%, 60% 55%, 40% 55%, 55% 40%, 0 0, 0 0;
-  }
-  50% {
-    background-position: 70% 65%, 25% 35%, 65% 25%, 25% 65%, 0 0, 0 0;
-  }
-  75% {
-    background-position: 40% 80%, 75% 15%, 20% 40%, 70% 30%, 0 0, 0 0;
-  }
-  100% {
-    background-position: 10% 15%, 85% 20%, 15% 85%, 85% 80%, 0 0, 0 0;
-  }
+.animated-mesh-bg::before,
+.animated-mesh-bg::after {
+  content: '';
+  position: absolute;
+  top: -25%;
+  left: -25%;
+  width: 150%;
+  height: 150%;
+  z-index: -1;
+  pointer-events: none;
+  will-change: transform;
+  filter: blur(55px);
+  mix-blend-mode: screen;
 }
 
-/* Smaller/faster variant used for the background-gallery preview swatches */
+.animated-mesh-bg::before {
+  background:
+    radial-gradient(circle at 25% 30%, var(--bg-c1, rgba(168, 85, 247, 0.55)), transparent 55%),
+    radial-gradient(circle at 75% 70%, var(--bg-c3, rgba(236, 72, 153, 0.4)), transparent 55%);
+  animation: meshDriftA 26s ease-in-out infinite;
+}
+
+.animated-mesh-bg::after {
+  background:
+    radial-gradient(circle at 75% 25%, var(--bg-c2, rgba(59, 130, 246, 0.5)), transparent 55%),
+    radial-gradient(circle at 25% 75%, var(--bg-c4, rgba(34, 211, 238, 0.35)), transparent 55%);
+  animation: meshDriftB 30s ease-in-out infinite;
+}
+
+@keyframes meshDriftA {
+  0%, 100% { transform: translate3d(0%, 0%, 0) scale(1); }
+  50% { transform: translate3d(8%, 10%, 0) scale(1.12); }
+}
+
+@keyframes meshDriftB {
+  0%, 100% { transform: translate3d(0%, 0%, 0) scale(1); }
+  50% { transform: translate3d(-9%, -7%, 0) scale(0.9); }
+}
+
+/* Smaller/faster/lighter-blur variant used for the background-gallery preview swatches */
 .animated-mesh-bg-mini {
+  background-size: var(--bg-grid-size, 16px) var(--bg-grid-size, 16px);
+}
+.animated-mesh-bg-mini::before,
+.animated-mesh-bg-mini::after {
+  filter: blur(20px);
+}
+.animated-mesh-bg-mini::before {
   animation-duration: 9s;
-  background-size: 90% 90%, 80% 80%, 75% 75%, 65% 65%, 16px 16px, 16px 16px;
+}
+.animated-mesh-bg-mini::after {
+  animation-duration: 11s;
+}
+
+/* Respect the user's OS-level motion preference: disable decorative
+   animation entirely (also meaningfully reduces GPU/CPU load). */
+@media (prefers-reduced-motion: reduce) {
+  .animated-mesh-bg::before,
+  .animated-mesh-bg::after,
+  .animate-float,
+  .animate-float-delay,
+  .animate-glow,
+  .animate-bounce-smooth,
+  .animate-rainbow,
+  .animate-progress-pulse,
+  .animate-box-glow {
+    animation: none !important;
+  }
 }
 
 /* Kill the native browser focus/tap "flash" on buttons and links.
