@@ -161,18 +161,23 @@ a:focus-visible {
   image-rendering: crisp-edges;
 }
 
-/* Glowing animated text */
-@keyframes pulseGlow {
-  0%, 100% { 
-    text-shadow: 0 0 8px rgba(168, 85, 247, 0.4), 0 0 20px rgba(59, 130, 246, 0.2);
+/* Glowing animated text -- pulses via opacity (GPU-compositable) rather
+   than animating text-shadow directly, which would force a repaint every
+   frame for as long as the tab is open. The shadow itself is a static,
+   one-time paint cost; only its opacity changes. */
+@keyframes pulseGlowOpacity {
+  0%, 100% {
+    opacity: 0.82;
   }
-  50% { 
-    text-shadow: 0 0 16px rgba(168, 85, 247, 0.7), 0 0 32px rgba(59, 130, 246, 0.4);
+  50% {
+    opacity: 1;
   }
 }
 
 .animate-glow {
-  animation: pulseGlow 3s infinite ease-in-out;
+  text-shadow: 0 0 12px rgba(168, 85, 247, 0.55), 0 0 24px rgba(59, 130, 246, 0.3);
+  animation: pulseGlowOpacity 3s ease-in-out infinite;
+  will-change: opacity;
 }
 
 /* Bounce animation */
