@@ -289,9 +289,9 @@ export default function App() {
         <div className="flex items-center space-x-2.5">
           <button
             onClick={() => setIsBackgroundModalOpen(true)}
-            className="hover-glow flex items-center space-x-1.5 text-xs font-bold px-3 py-2 bg-white/24 backdrop-blur-md border-[1.5px] border-white/45 hover:bg-white/40 hover:border-white/60 rounded-lg text-slate-100 transition-all active:scale-95"
+            className="hover-glow flex items-center space-x-1.5 text-xs font-bold px-3 py-2 bg-gradient-to-r from-cyan-600/80 to-blue-600/80 border-[1.5px] border-cyan-300/70 shadow-[0_0_0_1.5px_rgba(34,211,238,0.3)] hover:from-cyan-500/90 hover:to-blue-500/90 hover:border-cyan-200 rounded-lg text-white transition-all active:scale-95"
           >
-            <Sparkles className="h-4 w-4 text-cyan-400" />
+            <Sparkles className="h-4 w-4 text-white" />
             <span className="hidden sm:inline">Backgrounds</span>
           </button>
 
@@ -387,7 +387,7 @@ export default function App() {
         {/* Dashboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6">
           {/* Canvas Display Viewport */}
-          <div className="md:col-span-7 bg-white/24 backdrop-blur-md border-[1.5px] border-white/45 p-4 sm:p-5 rounded-xl flex flex-col items-center justify-between space-y-4 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.7)] hover:shadow-[0_20px_60px_-8px_rgba(0,0,0,0.8)] transition-shadow duration-300 group animate-float">
+          <div className="md:col-span-7 bg-slate-900/45 backdrop-blur-sm border-[1.5px] border-white/45 p-4 sm:p-5 rounded-xl flex flex-col items-center justify-between space-y-4 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.7)] hover:shadow-[0_20px_60px_-8px_rgba(0,0,0,0.8)] transition-shadow duration-300 group animate-float">
             <div className="flex items-center justify-between w-full text-xs text-slate-400">
               <div className="flex items-center space-x-2">
                 <span className="bg-white/24 backdrop-blur-sm border-[1.5px] border-white/35 px-2 py-0.5 rounded text-slate-200 font-mono">
@@ -483,7 +483,7 @@ export default function App() {
           </div>
 
           {/* Canvas Metadata & Palette Section */}
-          <div className="md:col-span-5 bg-white/24 backdrop-blur-md border-[1.5px] border-white/45 p-5 sm:p-6 rounded-xl flex flex-col justify-between space-y-5 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.7)] hover:shadow-[0_20px_60px_-8px_rgba(0,0,0,0.8)] transition-shadow duration-300 group animate-float-delay">
+          <div className="md:col-span-5 bg-slate-900/45 backdrop-blur-sm border-[1.5px] border-white/45 p-5 sm:p-6 rounded-xl flex flex-col justify-between space-y-5 shadow-[0_16px_50px_-10px_rgba(0,0,0,0.7)] hover:shadow-[0_20px_60px_-8px_rgba(0,0,0,0.8)] transition-shadow duration-300 group animate-float-delay">
             <div>
               <div className="flex items-center space-x-2 text-yellow-400 text-xs font-bold uppercase tracking-wider mb-1">
                 <span>Daily Theme</span>
@@ -519,7 +519,7 @@ export default function App() {
                   ? Array.from({ length: 8 }).map((_, idx) => (
                       <div
                         key={idx}
-                        className="flex flex-col items-center p-1.5 rounded-lg bg-white/10 border-[1.5px] border-white/15 animate-pulse"
+                        className="flex flex-col items-center p-1.5 rounded-lg bg-slate-800/60 border-[1.5px] border-white/20 animate-pulse"
                       >
                         <div className="w-full h-8 rounded bg-white/10" />
                         <div className="w-10 h-2 rounded bg-white/10 mt-1.5" />
@@ -529,7 +529,7 @@ export default function App() {
                   <button
                     key={idx}
                     onClick={() => copyToClipboard(hex)}
-                    className="group relative flex flex-col items-center p-1.5 rounded-lg bg-white/24 backdrop-blur-sm border-[1.5px] border-white/35 shadow-[0_4px_14px_-4px_rgba(0,0,0,0.6)] hover:bg-white/40 hover:border-white/60 hover:shadow-[0_6px_20px_-4px_rgba(34,211,238,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
+                    className="group relative flex flex-col items-center p-1.5 rounded-lg bg-slate-800/70 border-[1.5px] border-white/40 shadow-[0_0_0_1.5px_rgba(255,255,255,0.25),0_4px_14px_-4px_rgba(0,0,0,0.6)] hover:bg-slate-700/80 hover:border-white/70 hover:shadow-[0_0_0_2px_rgba(34,211,238,0.55),0_6px_20px_-4px_rgba(34,211,238,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
                   >
                     <div
                       className="w-full h-8 rounded border-[1.5px] border-white/45 shadow-inner group-hover:shadow-lg group-hover:border-white/70 transition-all duration-200"
