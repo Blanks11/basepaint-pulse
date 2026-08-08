@@ -29,8 +29,6 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('image');
   const [copiedHex, setCopiedHex] = useState(null);
-  const [timeLeft, setTimeLeft] = useState('');
-  const [progressPercent, setProgressPercent] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isArmoryOpen, setIsArmoryOpen] = useState(false);
   const [isBackgroundModalOpen, setIsBackgroundModalOpen] = useState(false);
@@ -97,7 +95,7 @@ export default function App() {
 
   // Check Unlocks Engine
   const checkUnlocks = (updatedStats) => {
-    const maybeUnlockItem = (item, unlockedIds, setUnlockedIds) => {
+    const maybeUnlockItem = (item, unlockedIds, setUnlockedIds, showToast = true) => {
       if (unlockedIds.includes(item.id)) return false;
       let isUnlocked = false;
 
@@ -113,16 +111,22 @@ export default function App() {
 
       if (isUnlocked) {
         setUnlockedIds((prev) => [...prev, item.id]);
-        setUnlockToast(item);
-        setTimeout(() => setUnlockToast(null), 4500);
+        if (showToast) {
+          setUnlockToast(item);
+          setTimeout(() => setUnlockToast(null), 4500);
+        }
         return true;
       }
 
       return false;
     };
 
+    // Cursors are a desktop-only feature (Custom Cursor + Cursor Armory are
+    // both hidden on mobile/touch), so don't surface the unlock toast for
+    // them there either -- unlocking still happens silently in the
+    // background so it's ready if the person switches to a desktop later.
     CURSORS.forEach((cursor) => {
-      maybeUnlockItem(cursor, unlockedCursorIds, setUnlockedCursorIds);
+      maybeUnlockItem(cursor, unlockedCursorIds, setUnlockedCursorIds, isDesktopPointer);
     });
 
     BACKGROUND_VARIANTS.forEach((variant) => {
@@ -192,32 +196,12 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isModalOpen, isArmoryOpen, isBackgroundModalOpen, liveDay]);
 
-  // Countdown & Cycle Timer
-  useEffect(() => {
-    const updateCycle = () => {
-      const now = Math.floor(Date.now() / 1000);
-      const day1Start = 1691599315;
-      const currentDayStart = day1Start + (currentDay - 1) * 86400;
-      const currentDayEnd = currentDayStart + 86400;
-      const diff = currentDayEnd - now;
-
-      const elapsed = Math.max(0, Math.min(86400, now - currentDayStart));
-      setProgressPercent(Math.min(100, Math.max(0, (elapsed / 86400) * 100)));
-
-      if (diff <= 0) {
-        setTimeLeft('Canvas Closed');
-      } else {
-        const hours = String(Math.floor(diff / 3600)).padStart(2, '0');
-        const minutes = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
-        const seconds = String(diff % 60).padStart(2, '0');
-        setTimeLeft(`${hours}:${minutes}:${seconds}`);
-      }
-    };
-
-    updateCycle();
-    const timer = setInterval(updateCycle, 1000);
-    return () => clearInterval(timer);
-  }, [currentDay]);
+  // NOTE: the live countdown + progress bar used to update state here,
+  // which forced the *entire* App tree (canvas image, all palette swatches,
+  // header, everything) to re-render every single second. They've been
+  // moved into their own small components (LiveCountdown / CycleProgressBar,
+  // defined below) that manage their own interval, so only those tiny
+  // pieces re-render each tick.
 
   const copyToClipboard = (hex) => {
     navigator.clipboard.writeText(hex);
@@ -342,7 +326,7 @@ export default function App() {
                   <span className="hidden sm:inline">Live Canvas</span>
                   <span className="text-emerald-500/60 hidden sm:inline">|</span>
                   <Clock className="h-3.5 w-3.5 text-emerald-400" />
-                  <span className="font-mono text-emerald-300 animate-bounce-smooth">{timeLeft}</span>
+                  <span className="font-mono text-emerald-300"><LiveCountdown currentDay={currentDay} /></span>
                 </div>
               ) : (
                 <span className="text-xs bg-gradient-to-r from-slate-800 to-slate-700 text-slate-300 border border-slate-600/50 px-2.5 py-1.5 rounded-lg font-medium hover:from-slate-700 hover:to-slate-600 transition-all duration-300">
@@ -376,12 +360,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="w-full bg-slate-900/50 rounded-full h-2 overflow-hidden border border-slate-800/80 shadow-lg">
-            <div
-              className="bg-gradient-to-r from-purple-500 via-blue-500 via-cyan-400 to-emerald-400 h-full transition-all duration-700 animate-rainbow shadow-lg"
-              style={{ width: `${progressPercent}%`, boxShadow: '0 0 16px rgba(168, 85, 247, 0.6), inset 0 0 8px rgba(255, 255, 255, 0.2)' }}
-            />
-          </div>
+          <CycleProgressBar currentDay={currentDay} />
         </section>
 
         {/* Dashboard Grid */}
@@ -802,6 +781,71 @@ export default function App() {
         height="1"
         alt=""
         className="hidden"
+      />
+    </div>
+  );
+}
+
+// --- Isolated per-second components ---
+// Each manages its own interval and local state, so a tick only re-renders
+// this tiny component instead of the whole page (App, canvas image, all
+// palette swatches, etc). This is the fix for the "ticking" jank that a
+// top-level setInterval->setState was causing every single second.
+
+const DAY1_START_UNIX = 1691599315;
+
+function LiveCountdown({ currentDay }) {
+  const [timeLeft, setTimeLeft] = useState('');
+
+  useEffect(() => {
+    const updateCycle = () => {
+      const now = Math.floor(Date.now() / 1000);
+      const currentDayStart = DAY1_START_UNIX + (currentDay - 1) * 86400;
+      const currentDayEnd = currentDayStart + 86400;
+      const diff = currentDayEnd - now;
+
+      if (diff <= 0) {
+        setTimeLeft('Canvas Closed');
+      } else {
+        const hours = String(Math.floor(diff / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+        const seconds = String(diff % 60).padStart(2, '0');
+        setTimeLeft(`${hours}:${minutes}:${seconds}`);
+      }
+    };
+
+    updateCycle();
+    const timer = setInterval(updateCycle, 1000);
+    return () => clearInterval(timer);
+  }, [currentDay]);
+
+  return <>{timeLeft}</>;
+}
+
+function CycleProgressBar({ currentDay }) {
+  const [progressPercent, setProgressPercent] = useState(0);
+
+  useEffect(() => {
+    const updateProgress = () => {
+      const now = Math.floor(Date.now() / 1000);
+      const currentDayStart = DAY1_START_UNIX + (currentDay - 1) * 86400;
+      const elapsed = Math.max(0, Math.min(86400, now - currentDayStart));
+      setProgressPercent(Math.min(100, Math.max(0, (elapsed / 86400) * 100)));
+    };
+
+    updateProgress();
+    const timer = setInterval(updateProgress, 1000);
+    return () => clearInterval(timer);
+  }, [currentDay]);
+
+  return (
+    <div className="w-full bg-slate-900/50 rounded-full h-2 overflow-hidden border border-slate-800/80 shadow-lg">
+      <div
+        className="bg-gradient-to-r from-purple-500 via-blue-500 via-cyan-400 to-emerald-400 h-full transition-[width] duration-700 shadow-lg"
+        style={{
+          width: `${progressPercent}%`,
+          boxShadow: '0 0 16px rgba(168, 85, 247, 0.6), inset 0 0 8px rgba(255, 255, 255, 0.2)',
+        }}
       />
     </div>
   );
