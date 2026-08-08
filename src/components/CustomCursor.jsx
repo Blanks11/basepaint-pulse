@@ -1,9 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Smartphone } from 'lucide-react';
 import { CURSORS } from '../utils/cursors';
 
 export default function CustomCursor({ activeCursorId }) {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
+  // Position is applied directly to the DOM via a ref + requestAnimationFrame,
+  // NOT via React state. Driving position through setState on every mousemove
+  // forces a full re-render 60-120+ times/sec, which is the main source of
+  // perceived lag. Only rare, low-frequency changes (visibility, hover state)
+  // go through React state.
+  const cursorRef = useRef(null);
+  const targetPos = useRef({ x: -100, y: -100 });
+  const rafId = useRef(null);
+
   const [isHoveringPointer, setIsHoveringPointer] = useState(false);
   const [isCursorVisible, setIsCursorVisible] = useState(false);
 
@@ -18,6 +26,14 @@ export default function CustomCursor({ activeCursorId }) {
     // If not desktop, don't attach tracking
     if (!isDesktopPointer) return;
 
+    const applyPosition = () => {
+      rafId.current = null;
+      if (cursorRef.current) {
+        const { x, y } = targetPos.current;
+        cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+      }
+    };
+
     const handleMouseMove = (e) => {
       const insideViewport =
         e.clientX >= 0 &&
@@ -25,14 +41,23 @@ export default function CustomCursor({ activeCursorId }) {
         e.clientX <= window.innerWidth &&
         e.clientY <= window.innerHeight;
 
-      setPosition({ x: e.clientX, y: e.clientY });
-      setIsCursorVisible(insideViewport);
+      targetPos.current = { x: e.clientX, y: e.clientY };
+
+      // Batch the actual DOM write to the browser's next paint frame,
+      // and skip scheduling a new one if one is already pending.
+      if (rafId.current === null) {
+        rafId.current = requestAnimationFrame(applyPosition);
+      }
+
+      // Only trigger a React re-render when these booleans actually flip,
+      // not on every pixel of movement.
+      setIsCursorVisible((prev) => (prev !== insideViewport ? insideViewport : prev));
 
       const target = e.target;
       const isClickable =
         target instanceof Element &&
         target.closest('button, a, [role="button"], input, select') !== null;
-      setIsHoveringPointer(isClickable);
+      setIsHoveringPointer((prev) => (prev !== isClickable ? isClickable : prev));
     };
 
     const handlePageLeave = () => {
@@ -55,7 +80,7 @@ export default function CustomCursor({ activeCursorId }) {
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handlePageLeave, true);
     document.addEventListener('mouseout', handleMouseOut, true);
     document.addEventListener('pointerout', handlePointerOut, true);
@@ -69,6 +94,9 @@ export default function CustomCursor({ activeCursorId }) {
       document.removeEventListener('pointerout', handlePointerOut, true);
       window.removeEventListener('blur', handlePageLeave);
       window.removeEventListener('focus', handlePageEnter);
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current);
+      }
     };
   }, [isDesktopPointer]);
 
@@ -96,11 +124,10 @@ export default function CustomCursor({ activeCursorId }) {
     <>
       {/* Custom Cursor Follower */}
       {isCursorVisible && (
-        <div 
-          className="fixed top-0 left-0 pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2"
-          style={{
-            transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
-          }}
+        <div
+          ref={cursorRef}
+          className="fixed top-0 left-0 pointer-events-none z-[9999]"
+          style={{ willChange: 'transform' }}
         >
           <img src={selectedCursor.url} alt="cursor" className="w-8 h-8 object-contain" />
         </div>
