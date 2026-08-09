@@ -237,9 +237,13 @@ export default function App() {
 
   const activeBackground = BACKGROUND_VARIANTS.find((bg) => bg.id === activeBackgroundId) || BACKGROUND_VARIANTS[0];
 
+  const anyModalOpen = isModalOpen || isArmoryOpen || isBackgroundModalOpen;
+
   return (
     <div
-      className="relative min-h-screen text-white flex flex-col font-mono selection:bg-yellow-400 selection:text-black animated-mesh-bg"
+      className={`relative min-h-screen text-white flex flex-col font-mono selection:bg-yellow-400 selection:text-black animated-mesh-bg ${
+        anyModalOpen ? 'mesh-paused' : ''
+      }`}
       style={{
         '--bg-base': activeBackground.colors.base,
         '--bg-c1': activeBackground.colors.c1,
