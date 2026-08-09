@@ -102,6 +102,15 @@ body {
   animation-duration: 11s;
 }
 
+/* Pause the drifting background blobs whenever a backdrop-blur modal is
+   open on top of them. The blobs don't need to keep moving underneath a
+   modal the user can't even see clearly, and pausing removes the
+   per-frame re-blur cost every glass panel would otherwise pay. */
+.mesh-paused.animated-mesh-bg::before,
+.mesh-paused.animated-mesh-bg::after {
+  animation-play-state: paused;
+}
+
 /* Respect the user's OS-level motion preference: disable decorative
    animation entirely (also meaningfully reduces GPU/CPU load). */
 @media (prefers-reduced-motion: reduce) {
